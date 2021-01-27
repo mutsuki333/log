@@ -10,12 +10,12 @@ Mostly copied for the stdlib, so this package is fully compatible. All you need 
 import "github.com/mutsuki333/log"
 
 func main() {
-	log.Println("This is for debug")
+    log.Println("This is for debug")
     log.Info("This is info")
 
     //Disable Debug log
     log.SetOutput(ioutil.Discard)
-	log.Println("No more debug logs")
+    log.Println("No more debug logs")
 }
 ```
 
