@@ -21,5 +21,5 @@ func main() {
 
 output:
 
-> Debug: 2021/01/27 23:32:47 main.go:6: This is for debug
+> Debug: 2021/01/27 23:32:47 main.go:6: This is for debug  
 > 2021/01/27 23:32:47 This is info
