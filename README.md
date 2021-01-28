@@ -1,7 +1,9 @@
 # log
 A minimal go logger to extend with Info function
 
-Mostly copied for the stdlib, so this package is fully compatible. All you need is to replace the import.
+Mostly copied for the stdlib, so this package is fully compatible.   
+All you need is to replace the import for the extended Info function.  
+And this lib uses init() to override std log, so drop in replacement can be done without modifying existing code.
 
 
 ## Usage
