@@ -7,22 +7,26 @@ import (
 	"os"
 )
 
-// DebugLogger logs to Stderr by default with `Debug` prefix, can be override.
-var DebugLogger = stdlog.New(os.Stderr, "Debug: ", stdlog.Ldate|stdlog.Ltime|stdlog.Lshortfile)
-
 // InfoLogger logs to Stdout by default, can be override.
 var InfoLogger = stdlog.New(os.Stdout, "", stdlog.Ldate|stdlog.Ltime)
 
-// Println calls Output to print to the DebugLogger.
-// Arguments are handled in the manner of fmt.Println.
-func Println(v ...interface{}) {
-	DebugLogger.Output(2, fmt.Sprintln(v...))
+// Override std log
+func init() {
+	stdlog.SetOutput(os.Stderr)
+	stdlog.SetPrefix("Debug: ")
+	stdlog.SetFlags(stdlog.Ldate | stdlog.Ltime | stdlog.Lshortfile)
 }
 
-// Printf calls Output to print to the DebugLogger.
+// Println calls Output to print to the standard logger.
+// Arguments are handled in the manner of fmt.Println.
+func Println(v ...interface{}) {
+	stdlog.Output(2, fmt.Sprintln(v...))
+}
+
+// Printf calls Output to print to the standard logger.
 // Arguments are handled in the manner of fmt.Printf.
 func Printf(format string, v ...interface{}) {
-	DebugLogger.Output(2, fmt.Sprintf(format, v...))
+	stdlog.Output(2, fmt.Sprintf(format, v...))
 }
 
 // Info calls Output to print to the InfoLogger.
@@ -35,34 +39,34 @@ func Info(v ...interface{}) {
 
 // SetOutput sets the output destination for the standard logger.
 func SetOutput(w io.Writer) {
-	DebugLogger.SetOutput(w)
+	stdlog.SetOutput(w)
 }
 
 // Flags returns the output flags for the standard logger.
 // The flag bits are Ldate, Ltime, and so on.
 func Flags() int {
-	return DebugLogger.Flags()
+	return stdlog.Flags()
 }
 
 // SetFlags sets the output flags for the standard logger.
 // The flag bits are Ldate, Ltime, and so on.
 func SetFlags(flag int) {
-	DebugLogger.SetFlags(flag)
+	stdlog.SetFlags(flag)
 }
 
 // Prefix returns the output prefix for the standard logger.
 func Prefix() string {
-	return DebugLogger.Prefix()
+	return stdlog.Prefix()
 }
 
 // SetPrefix sets the output prefix for the standard logger.
 func SetPrefix(prefix string) {
-	DebugLogger.SetPrefix(prefix)
+	stdlog.SetPrefix(prefix)
 }
 
 // Writer returns the output destination for the standard logger.
 func Writer() io.Writer {
-	return DebugLogger.Writer()
+	return stdlog.Writer()
 }
 
 // These functions write to the standard logger.
@@ -70,45 +74,45 @@ func Writer() io.Writer {
 // Print calls Output to print to the standard logger.
 // Arguments are handled in the manner of fmt.Print.
 func Print(v ...interface{}) {
-	DebugLogger.Output(2, fmt.Sprint(v...))
+	stdlog.Output(2, fmt.Sprint(v...))
 }
 
 // Fatal is equivalent to Print() followed by a call to os.Exit(1).
 func Fatal(v ...interface{}) {
-	DebugLogger.Output(2, fmt.Sprint(v...))
+	stdlog.Output(2, fmt.Sprint(v...))
 	os.Exit(1)
 }
 
 // Fatalf is equivalent to Printf() followed by a call to os.Exit(1).
 func Fatalf(format string, v ...interface{}) {
-	DebugLogger.Output(2, fmt.Sprintf(format, v...))
+	stdlog.Output(2, fmt.Sprintf(format, v...))
 	os.Exit(1)
 }
 
 // Fatalln is equivalent to Println() followed by a call to os.Exit(1).
 func Fatalln(v ...interface{}) {
-	DebugLogger.Output(2, fmt.Sprintln(v...))
+	stdlog.Output(2, fmt.Sprintln(v...))
 	os.Exit(1)
 }
 
 // Panic is equivalent to Print() followed by a call to panic().
 func Panic(v ...interface{}) {
 	s := fmt.Sprint(v...)
-	DebugLogger.Output(2, s)
+	stdlog.Output(2, s)
 	panic(s)
 }
 
 // Panicf is equivalent to Printf() followed by a call to panic().
 func Panicf(format string, v ...interface{}) {
 	s := fmt.Sprintf(format, v...)
-	DebugLogger.Output(2, s)
+	stdlog.Output(2, s)
 	panic(s)
 }
 
 // Panicln is equivalent to Println() followed by a call to panic().
 func Panicln(v ...interface{}) {
 	s := fmt.Sprintln(v...)
-	DebugLogger.Output(2, s)
+	stdlog.Output(2, s)
 	panic(s)
 }
 
@@ -120,5 +124,5 @@ func Panicln(v ...interface{}) {
 // if Llongfile or Lshortfile is set; a value of 1 will print the details
 // for the caller of Output.
 func Output(calldepth int, s string) error {
-	return DebugLogger.Output(calldepth+1, s) // +1 for this frame.
+	return stdlog.Output(calldepth+1, s) // +1 for this frame.
 }
